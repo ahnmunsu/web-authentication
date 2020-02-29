@@ -69,6 +69,9 @@ Cookie: connect.sid=s%3AYYnqfZSfR0TT74rPhpK6bR2TvX9-aVLo.zH6USMrZO5bsz5sV%2BkS3r
     * HTTPS를 사용해서 요청을 암호화  
     * 세션의 유효 시간을 제한  
 * 서버에 세션을 저장하기 때문에 추가적인 저장 공간이 필요하고 서버 부하가 생긴다.
+
+### 구현 예 (Node.js, Express, Redis)
+https://github.com/ahnmunsu/nodejs-express-session-redis
 ---
 **[⬆ 목차](#목차)**
 
