@@ -2,7 +2,7 @@
 
 ## 목차
 1.  **[Session Cookie 방식](#Session-Cookie-방식)**
-2.  **[JWT(Json Web Token)](#JWT-Json-Web-Token)**
+2.  **[JWT(Json Web Token)](#JWT-(Json-Web-Token-))**
 3.  **[OAuth](#OAuth)**
 
 
