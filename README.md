@@ -84,6 +84,7 @@ https://github.com/ahnmunsu/nodejs-express-session-redis
 **[⬆ 목차](#목차)**
 
 ## References
-*  https://tansfil.tistory.com/58
-*  https://tansfil.tistory.com/59
-*  https://tansfil.tistory.com/60
+* https://tansfil.tistory.com/58
+* https://tansfil.tistory.com/59
+* https://tansfil.tistory.com/60
+* https://velopert.com/2389
