@@ -76,6 +76,116 @@ https://github.com/ahnmunsu/nodejs-express-session-redis
 **[⬆ 목차](#목차)**
 
 ## JWT(Json Web Token)
+JSON Web Token(JWT) 은 웹표준(RFC 7519)으로써 두 개체에서 JSON 객체를 사용하여 가볍고 자가수용적인(self-contained) 방식으로 정보를 안전성 있게 전달해 준다.
+### JWT 사용 목적
+* 회원 인증
+ * 로그인 시 유저 정보 기반으로 토큰 발급
+ * 유저는 요청 시 마다 토큰을 포함하여 전달
+ * 서버는 토큰 유효성 검증 및 권한 확인하여 처리
+* 정보 교류
+ * 정보가 sign 되어 있기 때문에 정보를 보낸이와 내용이 조작되지 않았는지 검증 가능
+### JWT 구조
+![jwt](./images/jwt.png)
+#### 헤더(Header)
+* Header는 두 가지 정보를 저장하고 있다.
+  * typ: 토큰 타입을 지정한다. JWT로 지정한다.
+  * alg: hash 알고리즘을 지정한다. HMAC SHA256, RSA가 사용된다. signature에서 이 알고리즘을 사용한다.
+#### Header 인코딩 구현
+```js
+const header = {
+  "typ": "JWT",
+  "alg": "HS256"
+};
+
+// encode to base64
+const headerStr = JSON.stringify(header);
+const encodedHeader = Buffer.alloc(headerStr.length, headerStr)
+                            .toString('base64')
+                            .replace('=', ''); /* Remove base64 pad characters */
+                            
+console.log('header: ',encodedHeader); // header:  eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9
+```
+#### 정보(Payload)
+* Payload 부분에는 토큰에 저장할 정보가 들어 있다.
+* 토큰에 저장하는 정보를 클레임(claim)이라고 하며, name-value 쌍으로 되어있다.
+* 클레임의 종류
+  * 등록된(registered) 클레임
+  * 공개(public) 클레임
+  * 비공개(private) 클레임
+
+#### 등록된(registered) 클레임
+* 토큰에 대한 정보로써 미리 정해진 클레임이다.
+* 등록된 클레임은 선택적으로 사용할 수 있다.
+* 클레임 종류
+  * iss: 토큰 발급자(issuer)
+  * sub: 토큰 제목(subject)
+  * aud: 토큰 대상자(audience)
+  * exp: 토큰 만료 시간(expiration). NumericDate 형식(예: 1583033110)
+  * nbf: 토큰 활성 시점(Not Before). NumericDate 형식
+  * iat: 토큰 발급 시간(issued at)
+  * jti: JWT 고유 식별자. 중복 처리를 방지하기 위해 사용.
+#### 공개(public) 클레임
+* 충돌이 방지된(collision-resistant) 이름을 가지고 있어야 한다.
+* 클레임 이름을 URI 형식으로 짓는다.
+```js
+{
+  "https://github.com/ahnmunsu/is_admin": true
+}
+```
+#### 비공개(private) 클레임
+* 서버-클라이언트 간에 협의하여 정의된 클레임이다.
+```js
+{
+  "username": "ahnmunsu"
+}
+```
+#### Payload 인코딩 구현
+```js
+const payload = {
+    "iss": "github.com/ahnmunsu",
+    "exp": "1583033110",
+    "https://github.com/ahnmunsu/is_admin": true,
+    "userId": "10000",
+    "username": "ahnmunsu"
+};
+
+// encode to base64
+const payloadStr = JSON.stringify(payload);
+const encodedPayload = Buffer.alloc(payloadStr.length, payloadStr)
+                            .toString('base64')
+                            .replace('=', ''); /* Remove base64 pad characters */
+
+console.log('payload: ',encodedPayload); 
+/*
+payload:  eyJpc3MiOiJnaXRodWIuY29tL2Fobm11bnN1IiwiZXhwIjoiMTU4MzAzMzExMCIsImh0dHBzOi8vZ2l0aHViLmNvbS9haG5tdW5zdS9pc19hZG1pbiI6dHJ1ZSwidXNlcklkIjoiMTAwMDAiLCJ1c2VybmFtZSI6ImFobm11bnN1In0
+*/
+```
+#### 서명(signature)
+* 서명은 Header의 인코딩 값과 Payload의 인코딩 값을 합친 후 주어진 비밀키로 Hash하여 생성한다.
+* 서명을 생성하는 과정의 pseudo code는 아래와 같다.
+```js
+HMACSHA256(base64UrlEncode(header) + "." + base64UrlEncode(payload), secret)
+```
+#### 서명 해싱 및 인코딩 구현
+```js
+const crypto = require('crypto');
+
+const encodedHeader = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9";
+const encodedPayload = "eyJpc3MiOiJnaXRodWIuY29tL2Fobm11bnN1IiwiZXhwIjoiMTU4MzAzMzExMCIsImh0dHBzOi8vZ2l0aHViLmNvbS9haG5tdW5zdS9pc19hZG1pbiI6dHJ1ZSwidXNlcklkIjoiMTAwMDAiLCJ1c2VybmFtZSI6ImFobm11bnN1In0";
+
+const signature = crypto.createHmac('sha256', 'secret')
+             .update(encodedHeader + '.' + encodedPayload)
+             .digest('base64')
+             .replace('=', '');
+
+console.log('signature: ',signature); // signature:  KZoSy2cyh6LlliJ1tJ+YOo4dgVoxHLowbmJdUQB5oNA
+```
+### JWT 검증
+* 위 구현 예에서 생성한 JWT
+`eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9`.`eyJpc3MiOiJnaXRodWIuY29tL2Fobm11bnN1IiwiZXhwIjoiMTU4MzAzMzExMCIsImh0dHBzOi8vZ2l0aHViLmNvbS9haG5tdW5zdS9pc19hZG1pbiI6dHJ1ZSwidXNlcklkIjoiMTAwMDAiLCJ1c2VybmFtZSI6ImFobm11bnN1In0`.`KZoSy2cyh6LlliJ1tJ+YOo4dgVoxHLowbmJdUQB5oNA`
+* 위 값을 https://jwt.io 의 디버거에 붙여 넣고 `your-256-bit-secret` 부분에 비밀키인 `secret`을 입력한다.
+![jwt_verification](./images/jwt_verification.png)
+### JWT 인증 과정
 ---
 **[⬆ 목차](#목차)**
 
