@@ -3,7 +3,7 @@
 ## 목차
 1.  **[Session Cookie 방식](#Session-Cookie-방식)**
 2.  **[JWT(Json Web Token)](#JWTJson-Web-Token)**
-3.  **[JWT-Refresh Token](#JWTRefresh-Token)**
+3.  **[JWT Refresh Token](#JWT-Refresh-Token)**
 3.  **[OAuth](#OAuth)**
 
 
@@ -268,7 +268,7 @@ https://github.com/ahnmunsu/node-jwt-authentication-api
 ---
 **[⬆ 목차](#목차)**
 
-## JWT-Refresh Token
+## JWT Refresh Token
 ---
 **[⬆ 목차](#목차)**
 
