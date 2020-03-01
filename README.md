@@ -252,6 +252,16 @@ Connection: keep-alive
 
 [{"id":1,"username":"test","firstName":"Test","lastName":"User"}]
 ```
+
+### JWT 장점
+* Session Cookie 방식은 저장소 관리가 필요하지만 JWT 방식은 발급 후 검증만 하기 때문에 저장소가 필요없다.
+* 확장성이 뛰어나 토큰 기반으로 하는 다른 인증 시스템에 접근이 가능하다. 예) 페이스북, 구글 로그인 등
+
+### JWT 단점
+* JWT는 한번 발급되면 유효 기간이 완료 될 때까지 계속 사용이 가능하다. 그렇기 때문에 악의적인 사용자에게도 한번 발급된 토큰을 취소할 수 없다.
+	* 해결책으로는 access token의 기간을 짧게 하고 refresh token을 함께 발급한다.
+* Payload가 암호화 되지 않기 때문에 중요한 정보를 담을 수 없다.
+* Session Cookie 방식보다 JWT의 길이가 길어서 요청이 많을수록 자원 낭비가 심해진다.
 ### 구현 예 (Node.js + Express + jsonwebtoken)
 https://github.com/ahnmunsu/node-jwt-authentication-api
 ---
