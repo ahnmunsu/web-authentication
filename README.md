@@ -186,6 +186,72 @@ console.log('signature: ',signature); // signature:  KZoSy2cyh6LlliJ1tJ+YOo4dgVo
 * 위 값을 https://jwt.io 의 디버거에 붙여 넣고 `your-256-bit-secret` 부분에 비밀키인 `secret`을 입력한다.
 ![jwt_verification](./images/jwt_verification.png)
 ### JWT 인증 과정
+![jwt2](./images/jwt2.png)
+1. 사용자가 로그인을 한다.  
+```
+POST http://192.168.0.38:4000/users/authenticate HTTP/1.1
+Content-Type: application/json
+User-Agent: PostmanRuntime/7.20.1
+Accept: */*
+Cache-Control: no-cache
+Postman-Token: 5da98e59-dc63-4e4c-8a09-a75b2913c543
+Host: 192.168.0.38:4000
+Accept-Encoding: gzip, deflate
+Content-Length: 44
+Connection: keep-alive
+
+{
+	"username": "test",
+	"password": "test"
+}
+```
+2. DB에서 계정 정보를 읽어 사용자를 확인 한다.  
+3. Payload에 유효 기간 등 필요한 registered claim을 설정하고 토큰을 발급한다.
+4. 기타 정보와 함께 토큰을 사용자에게 전달한다.
+```
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Access-Control-Allow-Origin: *
+Content-Type: application/json; charset=utf-8
+Content-Length: 250
+ETag: W/"fa-oAxmn5mxiHn9VACYSF59wopSHpk"
+Date: Sun, 01 Mar 2020 10:45:02 GMT
+Connection: keep-alive
+
+{ 
+  "id":1,
+  "username":"test",
+  "firstName":"Test",
+  "lastName":"User",
+  "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tL2Fobm11bnN1IiwiYXVkIjoxLCJpYXQiOjE1ODMwNTk1MDIsImV4cCI6MTU4MzA2MzEwMn0.0u4pe4nRFgxTddhMqbexylj9uOJuLNHAErr9PrBDsDM"
+}
+```
+5. 사용자는 받은 토큰을 저장해 두고 요청을 보낼 때마다 헤더에 실어서 보낸다.  
+```
+GET http://192.168.0.38:4000/users/ HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tL2Fobm11bnN1IiwiYXVkIjoxLCJpYXQiOjE1ODMwNTk1MDIsImV4cCI6MTU4MzA2MzEwMn0.0u4pe4nRFgxTddhMqbexylj9uOJuLNHAErr9PrBDsDM
+User-Agent: PostmanRuntime/7.20.1
+Accept: */*
+Cache-Control: no-cache
+Postman-Token: 451e8f4e-05c0-40bd-81a0-c4e6ab62d030
+Host: 192.168.0.38:4000
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+```
+6. 서버는 해당 토큰의 signature를 비밀키로 복호화하여 조작 여부, 유효 기간을 확인한다.  
+7. 인증에 이상이 없으면 Payload를 디코딩하여 사용자의 ID에 맞는 응답을 전달한다.  
+```
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Access-Control-Allow-Origin: *
+Content-Type: application/json; charset=utf-8
+Content-Length: 65
+ETag: W/"41-qKX2x0QmEu2twz7f6vncJbVnIvo"
+Date: Sun, 01 Mar 2020 10:54:21 GMT
+Connection: keep-alive
+
+[{"id":1,"username":"test","firstName":"Test","lastName":"User"}]
+```
 ---
 **[⬆ 목차](#목차)**
 
