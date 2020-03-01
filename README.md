@@ -3,6 +3,7 @@
 ## 목차
 1.  **[Session Cookie 방식](#Session-Cookie-방식)**
 2.  **[JWT(Json Web Token)](#JWTJson-Web-Token)**
+3.  **[JWT-Refresh Token](#JWTRefresh-Token)**
 3.  **[OAuth](#OAuth)**
 
 
@@ -264,6 +265,10 @@ Connection: keep-alive
 * Session Cookie 방식보다 JWT의 길이가 길어서 요청이 많을수록 자원 낭비가 심해진다.
 ### 구현 예 (Node.js + Express + jsonwebtoken)
 https://github.com/ahnmunsu/node-jwt-authentication-api
+---
+**[⬆ 목차](#목차)**
+
+## JWT-Refresh Token
 ---
 **[⬆ 목차](#목차)**
 
