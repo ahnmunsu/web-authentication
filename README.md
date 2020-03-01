@@ -252,6 +252,8 @@ Connection: keep-alive
 
 [{"id":1,"username":"test","firstName":"Test","lastName":"User"}]
 ```
+### 구현 예 (Node.js + Express + jsonwebtoken)
+https://github.com/ahnmunsu/node-jwt-authentication-api
 ---
 **[⬆ 목차](#목차)**
 
