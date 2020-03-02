@@ -281,3 +281,4 @@ https://github.com/ahnmunsu/node-jwt-authentication-api
 * https://tansfil.tistory.com/59
 * https://tansfil.tistory.com/60
 * https://velopert.com/2389
+* https://solidgeargroup.com/refresh-token-with-jwt-authentication-node-js/
