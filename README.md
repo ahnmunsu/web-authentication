@@ -310,6 +310,104 @@ Connection: keep-alive
 	"refreshToken":"txkacOBP51yJjdjDQum8g07MjmqtHeUhR58AONRqnAJIx2xQj1o4uE23pYv8kAMb2uMYEhxK1oGCigOAtM9kdYjsbVt9W7JPm4IunxjMdnfgEdFmE7o6FWTvvGs0zCXOuPRn29cHREy2zlhPpCBxvsdlviiK05M9yTkiykxlFbkC43tpo4LdE6Oe2Nw59hxenXBEiGomBxWOkrdOFW3l5WgaZlnNf5bLLyx2OPVGO7Bx5Qs7P7OPFkXddTSSW0gL"
 }
 ```
+5. 사용자는 Refresh Token은 저장소에 저장 후 Access Token을 헤더에 실어 요청을 보낸다.  
+```
+GET http://192.168.0.38:4000/users/ HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tL2Fobm11bnN1IiwiYXVkIjoxLCJpYXQiOjE1ODMyNDMzMDIsImV4cCI6MTU4MzI0MzM2Mn0.M-S6RoNUyl0y1LXNZmjUT4Jn5ZR1EbmzsPvN0dObRHw
+User-Agent: PostmanRuntime/7.22.0
+Accept: */*
+Cache-Control: no-cache
+Postman-Token: fe530e4b-3b5e-4ba3-a586-d211e1d68cea
+Host: 192.168.0.38:4000
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+```
+6. 서버는 Access Token를 검증한다.  
+7. 검증에 이상이 없으면 요청한 데이터를 보낸다.  
+```
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Access-Control-Allow-Origin: *
+Content-Type: application/json; charset=utf-8
+Content-Length: 65
+ETag: W/"41-qKX2x0QmEu2twz7f6vncJbVnIvo"
+Date: Tue, 03 Mar 2020 13:48:29 GMT
+Connection: keep-alive
+
+[
+	{
+		"id":1,
+		"username":"test",
+		"firstName":"Test",
+		"lastName":"User"
+	}
+]
+```
+8. 시간이 지나 Access Token이 만료되었다.  
+9. 사용자는 이전과 동일하게 Access Token을 헤더에 실어 요청을 보낸다.  
+```
+GET http://192.168.0.38:4000/users/ HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tL2Fobm11bnN1IiwiYXVkIjoxLCJpYXQiOjE1ODMyNDMzMDIsImV4cCI6MTU4MzI0MzM2Mn0.M-S6RoNUyl0y1LXNZmjUT4Jn5ZR1EbmzsPvN0dObRHw
+User-Agent: PostmanRuntime/7.22.0
+Accept: */*
+Cache-Control: no-cache
+Postman-Token: a2fcb648-a471-4498-9cf7-6c0a56f1f2ab
+Host: 192.168.0.38:4000
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+```
+10. 서버는 Acess Token이 만료됐음을 확인한다.  
+11. Access Token이 만료되었음을 응답을 통해 알린다.  
+```
+HTTP/1.1 401 Unauthorized
+X-Powered-By: Express
+Access-Control-Allow-Origin: *
+Content-Type: application/json; charset=utf-8
+Content-Length: 27
+ETag: W/"1b-Ji+DCy0zEZBDY9hox7El2YNCqZU"
+Date: Tue, 03 Mar 2020 13:51:24 GMT
+Connection: keep-alive
+
+{
+	"message":"Expired Token"
+}
+```
+12. 사용자는 Refresh Token과 Acess Token을 함께 서버로 보낸다.  
+```
+POST http://192.168.0.38:4000/users/refresh HTTP/1.1
+Content-Type: application/json
+User-Agent: PostmanRuntime/7.22.0
+Accept: */*
+Cache-Control: no-cache
+Postman-Token: 5c6d5f9f-ddb2-4de7-b133-a9293111df82
+Host: 192.168.0.38:4000
+Accept-Encoding: gzip, deflate, br
+Content-Length: 489
+Connection: keep-alive
+
+{
+	"userId": 1,
+	"accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tL2Fobm11bnN1IiwiYXVkIjoxLCJpYXQiOjE1ODMyNDQwOTgsImV4cCI6MTU4MzI0NDE1OH0.ISZ_dXa6xTJQV0xzIb-4CP0VRiYpyu6uDYS3el1vmaE",
+	"refreshToken": "LBDW5qApn39Wd3fHaJFhKav0w12o2jqlDTY5vzj0Wsimm4g7p53H1I66nJ8QwL6FLBXrlWuMMT78HaPTutNSe0bdo7eBqwURc6tWrkp2A5tl0kJJpzrZEahopxUApPnIEeugdgfhvP4vctIKcYP69Biwh13Jk21s5GBZFnuAPMFjcgJM1SBh7iFka2mTgQeOk9bonn0aHX7s1eXdabSXe6a1GNPvqUIuzcmDk4cM52awheLMGgfusjaKEyp3XzYC"
+}
+```
+13. 서버는 받은 Acess Token을 검증한 후, 받은 Refresh Token과 저장된 Refresh Token을 비교하여 이상 없을 시 Access Token을 새로 발급한다.  
+```
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Access-Control-Allow-Origin: *
+Content-Type: application/json; charset=utf-8
+Content-Length: 194
+ETag: W/"c2-yu3bB7SZVZ1RIvPDYcGefcm+TNM"
+Date: Tue, 03 Mar 2020 14:01:56 GMT
+Connection: keep-alive
+
+{
+	"accessToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tL2Fobm11bnN1IiwiYXVkIjoxLCJpYXQiOjE1ODMyNDQxMTYsImV4cCI6MTU4MzI0NDE3Nn0.OQGSAl1lr34KeEdf5RbXwd1MzZvjqodSGvNk5-ImrCc"
+}
+```
+14. 서버는 새로운 Acess Token을 헤더에 실어 다시 요청을 진행한다.  
+
 ---
 **[⬆ 목차](#목차)**
 
