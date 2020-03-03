@@ -407,7 +407,8 @@ Connection: keep-alive
 }
 ```
 14. 서버는 새로운 Acess Token을 헤더에 실어 다시 요청을 진행한다.  
-
+### 구현 예 (Node.js + Express + jsonwebtoken)
+https://github.com/ahnmunsu/node-jwt-authentication-api/tree/feature/refresh_token
 ---
 **[⬆ 목차](#목차)**
 
