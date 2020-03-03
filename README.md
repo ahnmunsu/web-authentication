@@ -269,6 +269,47 @@ https://github.com/ahnmunsu/node-jwt-authentication-api
 **[⬆ 목차](#목차)**
 
 ## JWT Refresh Token
+![refresh_token](./images/refresh_token.png)
+1. 사용자가 ID, PW를 통해 로그인한다.  
+```
+POST http://192.168.0.38:4000/users/authenticate HTTP/1.1
+Content-Type: application/json
+User-Agent: PostmanRuntime/7.22.0
+Accept: */*
+Cache-Control: no-cache
+Postman-Token: 890b0d83-dd13-4268-aa94-0f86d5f6a8da
+Host: 192.168.0.38:4000
+Accept-Encoding: gzip, deflate, br
+Content-Length: 44
+Connection: keep-alive
+
+{
+	"username": "test",
+	"password": "test"
+}
+```
+2. 서버에서는 회원 DB에서 값을 비교한다.  
+3. 인증이 완료된 회원은 Access Token과 Refresh Token을 발급하고 Refresh Token은 서버에 저장해둔다.
+4. 사용자에게 발급한 토큰을 전달한다.
+```
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Access-Control-Allow-Origin: *
+Content-Type: application/json; charset=utf-8
+Content-Length: 530
+ETag: W/"212-KiXuDVQcC1TFJcdeIeDn36FuYu0"
+Date: Tue, 03 Mar 2020 13:43:19 GMT
+Connection: keep-alive
+
+{
+	"id":1,
+	"username":"test",
+	"firstName":"Test",
+	"lastName":"User",
+	"accessToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tL2Fobm11bnN1IiwiYXVkIjoxLCJpYXQiOjE1ODMyNDI5OTksImV4cCI6MTU4MzI0MzA1OX0._mx1A0WVnY5OCZ2O9bL46x299-_toSUxcidJayAJvOs",
+	"refreshToken":"txkacOBP51yJjdjDQum8g07MjmqtHeUhR58AONRqnAJIx2xQj1o4uE23pYv8kAMb2uMYEhxK1oGCigOAtM9kdYjsbVt9W7JPm4IunxjMdnfgEdFmE7o6FWTvvGs0zCXOuPRn29cHREy2zlhPpCBxvsdlviiK05M9yTkiykxlFbkC43tpo4LdE6Oe2Nw59hxenXBEiGomBxWOkrdOFW3l5WgaZlnNf5bLLyx2OPVGO7Bx5Qs7P7OPFkXddTSSW0gL"
+}
+```
 ---
 **[⬆ 목차](#목차)**
 
