@@ -442,7 +442,7 @@ http://localhost:3002/auth_callback?code=4/xQHGj2uSBI2terjamtTJLbpD-INP4IIyqCTGm
 // 사용자가 액세스를 거절한 경우
 http://localhost:3002/auth_callback#error=access_denied
 ```
-4. Client는 위에서 받는 권한 증서(Authorization Grant, 위에서 qeury로 받은 code)를 Authorization Server에 보낸다.
+4. Client는 위에서 받는 권한 증서(Authorization Grant, 위에서 qury로 받은 code)를 Authorization Server에 보낸다.
 5. Authoriztion Server는 권한 증서를 확인 후 Client에게 Access Token과 Refresh Token, 그리고 사용자의 프로필(id 등)을 발급한다.
 6. Client는 필요 시 Token들을 저장하거나 Resource Owner에게 전달한다.
 7. Resource Owner가 Resource 요청 시 Client는 Access Token과 함께 요청을 보낸다.
