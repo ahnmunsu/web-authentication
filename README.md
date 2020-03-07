@@ -4,7 +4,7 @@
 1.  **[Session Cookie 방식](#Session-Cookie-방식)**
 2.  **[JWT(Json Web Token)](#JWTJson-Web-Token)**
 3.  **[JWT Refresh Token](#JWT-Refresh-Token)**
-3.  **[OAuth 2.0](#OAuth-2-0)**
+3.  **[OAuth 2.0](#OAuth-2.0)**
 
 
 ---
