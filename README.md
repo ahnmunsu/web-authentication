@@ -413,7 +413,43 @@ https://github.com/ahnmunsu/node-jwt-authentication-api/tree/feature/refresh_tok
 **[⬆ 목차](#목차)**
 
 ## OAuth 2.0
-### 
+### 구성
+![oauth_component](./images/oauth_component.png)
+*  Resource Owner : 자원의 소유자, 즉 웹/앱 사용자를 가리킨다.
+*  Client : 웹/앱 백엔드 서버
+*  Authorization : 권한 관리 서버. Access Token, Refresh Token을 발급/재발급 한다.
+*  Resource Server : 자원을 관리하는 서버(Google, Facebook 등)
+![oauth_diagran](./images/oauth_diagram.png)
+1. Resource Owner가 Client에게 인증 요청한다(예. Google 계정으로 로그인 버튼 선택)
+2. Client는 인증 페이지로 이동할 수 있는 URI를 보낸다.
+```
+// Google 계정으로 로그인 버튼의 링크 주소
+https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&scope=https://www.googleapis.com/auth/youtube.readonly&response_type=code&client_id=577732156032-f2ifed0ii2flktatn02j0ogsjt1qo10j.apps.googleusercontent.com&redirect_uri=http://localhost:3002/auth_callback
+```
+*  access_type : refresh token을 받기 위해 offline을 선택함.
+*  scope : 허용하는 resource 범위. 위에서는 youtube에 대한 읽기 전용 접근을 요청함.
+*  response_type : 인증 코드 반환 여부. code를 선택함.
+*  client_id : OAuth 2.0 클라이언트 ID. Google API에서 발급 받음.
+*  redirect_uri : 인증 성공 후 이동할 주소.
+3. Resource Owner가 인증 페이지에서 인증 및 Resource 접근 허용에 동의하면 Authorization Grant(code)를 URI에 포함하여 redirect_uri(보통 Client의 정해진 URL)로 이동한다.
+```
+// 사용자가 액세스에 동의한 경우
+http://localhost:3002/auth_callback?code=4/xQHGj2uSBI2terjamtTJLbpD-INP4IIyqCTGmTF1TBi4TYNN_h2R7dSCO_7SkYCjG6N-IufE4gsr_dIpaG_CCfo&scope=https://www.googleapis.com/auth/youtube.readonly
+```
+*  code : Google에서 발급한 인증 코드.
+*  scope : 허용하는 resource 범위.
+```
+// 사용자가 액세스를 거절한 경우
+http://localhost:3002/auth_callback#error=access_denied
+```
+4. Client는 위에서 받는 권한 증서(Authorization Grant, 위에서 qeury로 받은 code)를 Authorization Server에 보낸다.
+5. Authoriztion Server는 권한 증서를 확인 후 Client에게 Access Token과 Refresh Token, 그리고 사용자의 프로필(id 등)을 발급한다.
+6. Client는 필요 시 Token들을 저장하거나 Resource Owner에게 전달한다.
+7. Resource Owner가 Resource 요청 시 Client는 Access Token과 함께 요청을 보낸다.
+8. Resource Server는 Access Token이 유효한지 확인 후 Client에게 자원을 보낸다.
+9. Access Token이 만료 됐다면 Client는 Authorization Server에 Refresh Token을 보내 Access Token을 재발급 받는다.
+10. 재발급 받은 Access Token으로 Resource Server에 자원을 요청한다.
+11. Refresh Token도 만료 됐을 경우, Resource Owner는 새로운 Authorization Grant를 Client에게 넘겨야 한다.
 ---
 **[⬆ 목차](#목차)**
 
