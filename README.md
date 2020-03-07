@@ -450,6 +450,10 @@ http://localhost:3002/auth_callback#error=access_denied
 9. Access Token이 만료 됐다면 Client는 Authorization Server에 Refresh Token을 보내 Access Token을 재발급 받는다.
 10. 재발급 받은 Access Token으로 Resource Server에 자원을 요청한다.
 11. Refresh Token도 만료 됐을 경우, Resource Owner는 새로운 Authorization Grant를 Client에게 넘겨야 한다.
+
+### 구현 예
+https://github.com/ahnmunsu/Express-Google-OAuth2-Tutorial
+
 ---
 **[⬆ 목차](#목차)**
 
