@@ -433,13 +433,13 @@ https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&scope=https://w
 *  redirect_uri : 인증 성공 후 이동할 주소.
 3. Resource Owner가 인증 페이지에서 인증 및 Resource 접근 허용에 동의하면 Authorization Grant(code)를 URI에 포함하여 redirect_uri(보통 Client의 정해진 URL)로 이동한다.
 ```
-// 사용자가 액세스에 동의한 경우
+// 사용자가 액세스에 동의한 경우 아래 URI로 redirect 된다
 http://localhost:3002/auth_callback?code=4/xQHGj2uSBI2terjamtTJLbpD-INP4IIyqCTGmTF1TBi4TYNN_h2R7dSCO_7SkYCjG6N-IufE4gsr_dIpaG_CCfo&scope=https://www.googleapis.com/auth/youtube.readonly
 ```
 *  code : Google에서 발급한 인증 코드.
 *  scope : 허용하는 resource 범위.
 ```
-// 사용자가 액세스를 거절한 경우
+// 사용자가 액세스를 거절한 경우 아래 URI로 redirect 된다
 http://localhost:3002/auth_callback#error=access_denied
 ```
 4. Client는 위에서 받는 권한 증서(Authorization Grant, 위에서 qury로 받은 code)를 Authorization Server에 보낸다.
