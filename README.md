@@ -465,3 +465,4 @@ https://github.com/ahnmunsu/Express-Google-OAuth2-Tutorial
 * https://tansfil.tistory.com/60
 * https://velopert.com/2389
 * https://solidgeargroup.com/refresh-token-with-jwt-authentication-node-js/
+* https://dev.to/aidanlovelace/how-to-setup-google-oauth2-login-with-express-2d30
