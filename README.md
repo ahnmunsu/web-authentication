@@ -421,6 +421,21 @@ https://github.com/ahnmunsu/node-jwt-authentication-api/tree/feature/refresh_tok
 *  Client : 웹/앱 백엔드 서버
 *  Authorization : 권한 관리 서버. Access Token, Refresh Token을 발급/재발급 한다.
 *  Resource Server : 자원을 관리하는 서버(Google, Facebook 등)
+### Google OAuth 클라이언트 ID 만들기
+예제를 위해 테스트용 Google OAuth 클라이언트 ID를 만들고 아래와 같은 Credential을 발급 받는다.
+```json
+{
+	"web":	{
+		"client_id":"123456789000-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com",
+		"project_id":"ahnmunsu-oauth-1234567890000",
+		"auth_uri":"https://accounts.google.com/o/oauth2/auth",
+		"token_uri":"https://oauth2.googleapis.com/token",
+		"auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs",
+		"client_secret":"lkahje8123y4102ih4ilawe9",		
+		"redirect_uris":["http://localhost:3002/auth_callback"]
+	}
+}
+```
 ![oauth_diagran](./images/oauth_diagram.png)
 1. Resource Owner가 Client에게 인증 요청한다(예. Google 계정으로 로그인 버튼 선택)
 2. Client는 인증 페이지로 이동할 수 있는 URI를 보낸다.
@@ -431,7 +446,7 @@ https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&scope=https://w
 *  access_type : refresh token을 받기 위해 offline을 선택함.
 *  scope : 허용하는 resource 범위. 위에서는 youtube에 대한 읽기 전용 접근을 요청함.
 *  response_type : 인증 코드 반환 여부. code를 선택함.
-*  client_id : OAuth 2.0 클라이언트 ID. Google API에서 발급 받음.
+*  client_id : OAuth 2.0 클라이언트 ID. Google OAuth에서 발급 받음.
 *  redirect_uri : 인증 성공 후 이동할 주소.
 3. Resource Owner가 인증 페이지에서 인증 및 Resource 접근 허용에 동의하면 Authorization Grant(code)를 URI에 포함하여 redirect_uri(보통 Client의 정해진 URL)로 이동한다.
 ```
