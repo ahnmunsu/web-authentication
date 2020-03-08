@@ -445,7 +445,7 @@ http://localhost:3002/auth_callback#error=access_denied
 4. Client는 위에서 받는 권한 증서(Authorization Grant, 위에서 qury로 받은 code)를 Authorization Server에 보낸다.
 5. Authoriztion Server는 권한 증서를 확인 후 Client에게 Access Token과 Refresh Token, 그리고 사용자의 프로필(id 등)을 발급한다.
 6. Client는 필요 시 Token들을 저장하거나 Resource Owner에게 전달한다.
-7. Resource Owner가 Resource 요청 시 Client는 Access Token과 함께 요청을 보낸다.
+7. Resource Owner가 Resource 요청 시 Client는 Access Token과 함께 Resource Server에게 요청을 보낸다.
 8. Resource Server는 Access Token이 유효한지 확인 후 Client에게 자원을 보낸다.
 9. Access Token이 만료 됐다면 Client는 Authorization Server에 Refresh Token을 보내 Access Token을 재발급 받는다.
 10. 재발급 받은 Access Token으로 Resource Server에 자원을 요청한다.
