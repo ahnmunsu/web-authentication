@@ -73,6 +73,7 @@ Cookie: connect.sid=s%3AYYnqfZSfR0TT74rPhpK6bR2TvX9-aVLo.zH6USMrZO5bsz5sV%2BkS3r
 
 ### 구현 예 (Node.js, Express, Redis)
 https://github.com/ahnmunsu/nodejs-express-session-redis
+
 ---
 **[⬆ 목차](#목차)**
 
@@ -265,6 +266,7 @@ Connection: keep-alive
 * Session Cookie 방식보다 JWT의 길이가 길어서 요청이 많을수록 자원 낭비가 심해진다.
 ### 구현 예 (Node.js + Express + jsonwebtoken)
 https://github.com/ahnmunsu/node-jwt-authentication-api
+
 ---
 **[⬆ 목차](#목차)**
 
